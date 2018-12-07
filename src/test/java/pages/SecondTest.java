@@ -13,8 +13,9 @@ import java.util.Arrays;
 
 import static pages.AuthorizationPage.USER_NAME;
 import static pages.AuthorizationPage.USER_PASSWORD;
+import static pages.ManageJenkinsPage.URL_MANAGE_JENKINS;
 
-public class FirstTest {
+public class SecondTest {
 
     protected final String base_url = "http://localhost:8080/";
 
@@ -43,15 +44,16 @@ public class FirstTest {
     }
 
     @Test
-    public void firstTest() throws InterruptedException {
+    public void secondTest() throws InterruptedException {
         Thread.sleep(500);
-        Assert.assertTrue(loginPage.pressManageJenkinsLink().isElementDt_textManageUsersDisplayed(), "Element 'Manage Users' didn't appear on 'Manage User' page");
-        Thread.sleep(500);
-        Assert.assertTrue(loginPage.pressManageJenkinsLink().isElementDD_textCreateDeleteModifyDisplayed());
+        driver.get(URL_MANAGE_JENKINS);
+        ManageJenkinsPage manageJenkinsPage = PageFactory.initElements(driver, ManageJenkinsPage.class);
+        Assert.assertFalse(manageJenkinsPage.pressManageUsersLink().isLinkCreateUserAvailable(), "Link 'Create User' on 'Manage Users' page is not available");
     }
 
     @AfterMethod
     public void close() {
         driver.quit();
     }
+
 }

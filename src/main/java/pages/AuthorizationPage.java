@@ -10,6 +10,8 @@ public class AuthorizationPage {
     public static final String USER_NAME = "Artiom";
     public static final String USER_PASSWORD = "2887638";
 
+    protected final String URL = "http://localhost:8080/securityRealm/";
+
     private WebDriverWait wait;
     private final WebDriver driver;
 
@@ -50,20 +52,22 @@ public class AuthorizationPage {
         return this;
     }
 
+    //Отправка логина и пароля
     public void submitLoginAndPassword() {
         signIn_button.click();
     }
 
+    //Переход на страницу 'Manage Jenkins'
     public ManageJenkinsPage pressManageJenkinsLink() {
         linkManageJenkins.click();
         return new ManageJenkinsPage(driver);
     }
 
-    public boolean isElementLinkManageJenkinsExists() {
-        if (linkManageJenkins != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public boolean isElementLinkManageJenkinsExists() {
+//        if (linkManageJenkins != null) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 }

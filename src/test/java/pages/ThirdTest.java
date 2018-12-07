@@ -14,9 +14,10 @@ import java.util.Arrays;
 import static pages.AuthorizationPage.USER_NAME;
 import static pages.AuthorizationPage.USER_PASSWORD;
 
-public class FirstTest {
+public class ThirdTest {
 
     protected final String base_url = "http://localhost:8080/";
+
 
     WebDriver driver = null;
     AuthorizationPage loginPage = null;
@@ -43,15 +44,28 @@ public class FirstTest {
     }
 
     @Test
-    public void firstTest() throws InterruptedException {
+    public void secondTest() throws InterruptedException {
+        // 1-действие: "Открыть"
         Thread.sleep(500);
-        Assert.assertTrue(loginPage.pressManageJenkinsLink().isElementDt_textManageUsersDisplayed(), "Element 'Manage Users' didn't appear on 'Manage User' page");
+        driver.get("http://localhost:8080/securityRealm/");
         Thread.sleep(500);
-        Assert.assertTrue(loginPage.pressManageJenkinsLink().isElementDD_textCreateDeleteModifyDisplayed());
+
+        // С этого момента можно использовать PajeObject.
+        // С применением PageFactory это выглядит так:
+        ManageUsersPage page = PageFactory.initElements(driver, ManageUsersPage.class);
+        Thread.sleep(500);
+        CreateUserPage page1 = page.pressLinkCreateUser();
+        Thread.sleep(500);
+        Assert.assertTrue(page1.isCreateUserFormDisplayed(), "Form 'Create User' has not been displayed");
+
+        // 1-проверка: "Страница содержит форму с полями «Имя», «Рост», «Вес», радиокнопкой «Пол» и
+        // кнопкой отправки данных «Рассчитать». Также на странице есть соответствующие текстовые надписи."
+
     }
 
     @AfterMethod
     public void close() {
         driver.quit();
     }
+
 }

@@ -1,12 +1,14 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ManageUsersPage {
 
-    protected final String url = "http://localhost:8080/manage";
+    public static final String URL_MANAGE_USERS = "http://localhost:8080/securityRealm/";
 
+    By linkCreateUserLocator = By.xpath("//*[@id=\"tasks\"]/div[3]/a[2]");
 
     private WebDriverWait wait;
     private final WebDriver driver;
@@ -20,4 +22,19 @@ public class ManageUsersPage {
             throw new IllegalStateException("Wrong site page!");
         }
     }
+
+    //Нажатие на ссылку 'Create User' и переход на страницу 'Create User'
+    public CreateUserPage pressLinkCreateUser(){
+        driver.findElement(linkCreateUserLocator).click();
+        return new CreateUserPage(driver);
+    }
+
+
+
+    /////////////////////////////////////////////////////
+    //Проверка, доступна ли ссылка 'Create User'
+    public boolean isLinkCreateUserAvailable(){
+        return driver.findElement(linkCreateUserLocator).isDisplayed();
+    }
+    /////////////////////////////////////////////////////
 }
