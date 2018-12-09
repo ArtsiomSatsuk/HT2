@@ -3,17 +3,7 @@
 <suite name="Suite1" verbose="2">
     <test name="FirstTest">
         <classes>
-            <class name="pages.FirstTest"/>
+            <class name="tests.FirstTest"/>
         </classes>
     </test>
-    <!--<test name="SecondTest">-->
-        <!--<classes>-->
-            <!--<class name="pages.SecondTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="ThirdTest">-->
-        <!--<classes>-->
-            <!--<class name="pages.ThirdTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
 </suite>
