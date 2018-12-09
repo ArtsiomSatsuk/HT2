@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Driver {
 
-    //Синглтон. Создастся один объект драйвера при первой инициализации, а дальше между тестами будем его передавать.
+    //Синглтон. Создаём один объект драйвера, при первом вызове он инициализируется, а потом передаём его между тестами.
     private static WebDriver driver;
 
     private static final int IMPLICIT_WAIT_TIMEOUT = 30;
