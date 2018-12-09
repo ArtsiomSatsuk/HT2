@@ -11,7 +11,7 @@ public class DeleteUserPage extends AbstractPage{
     //Используем StringBuilder, чтобы не создавать несколько лишних объектов строк, а сразу создать одну строку
     private static final String DELETE_USER_URL = new StringBuilder(BASE_URL+"user/"+NEW_USER_NAME+"/delete").toString();
 
-    @FindBy(xpath = "//form[@action=\"doDelete\"]")//+++++++++++++++++
+    @FindBy(xpath = "//*[@id=\"main-panel\"]/form")
     private WebElement textAboutDeletingUser;
 
     @FindBy(id = "yui-gen1-button")
@@ -24,7 +24,7 @@ public class DeleteUserPage extends AbstractPage{
     }
 
     public boolean isTextAboutDeletingUserAppears() {
-        return textAboutDeletingUser.getText().trim().equals("Are you sure about deleting the user from Jenkins?");
+        return textAboutDeletingUser.getText().contains("Are you sure about deleting the user from Jenkins?");
     }
 
     public ManageUsersPage pressButtonYesToDeleteUser(){

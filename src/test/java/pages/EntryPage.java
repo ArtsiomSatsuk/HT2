@@ -8,7 +8,7 @@ public class EntryPage extends AbstractPage{
     public static final String USER_NAME = "Artiom";
     public static final String USER_PASSWORD = "2887638";
 
-    protected static final String BASE_URL = "http://localhost:8080/";
+    static final String BASE_URL = "http://localhost:8080/";
 
     // Подготовка элементов страницы.
     @FindBy(css = "input[id*=username]")
@@ -21,7 +21,7 @@ public class EntryPage extends AbstractPage{
     private WebElement signInButton;
 
     @FindBy(xpath = "//a[@href=\"/manage\"][@class=\"task-link\"]")
-    public WebElement linkManageJenkins;
+    private WebElement linkManageJenkins;
 
     public EntryPage() {
         super();

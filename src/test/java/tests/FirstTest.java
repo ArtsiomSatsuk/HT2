@@ -6,8 +6,8 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import pages.EntryPage;
 import pages.ManageJenkinsPage;
-import pages.ManageUsersPage;
 
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static pages.EntryPage.USER_NAME;
 import static pages.EntryPage.USER_PASSWORD;
@@ -21,7 +21,7 @@ public class FirstTest {
         entryPage = new EntryPage().openThisPage().setUserName(USER_NAME).setUserPassword(USER_PASSWORD);
         entryPage.submitLoginAndPassword();
     }
-
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     @Test(testName = "checkDisplayedElementDtOnManageJenkinsPage")
     public void firstTest() {
         boolean actualResult = entryPage.pressManageJenkinsLink().isDtElementManageUsersDisplayed();
@@ -48,27 +48,44 @@ public class FirstTest {
                 .pressLinkCreateUser().isCreateUserFormDisplayedProperly();
         assertTrue(actualResult, "[Form 'Create User' is not displayed properly]");
     }
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @Test(testName = "checkIfNewTableRowAppearsOnManageUsersPageAfterCreatingNewUser")
     public void FourthTest() {
-//        boolean actualResult = new ManageJenkinsPage().openThisPage().pressManageUsersLink().pressLinkCreateUser()
-//                .fillInCreateUserForm().pressCreateUserButton().openThisPage().isNewTableRowWithNewUserHasDisplayed();
-//                assertTrue(actualResult, "[New table row with new user is not displayed]");
+        boolean actualResult = new ManageJenkinsPage().openThisPage().pressManageUsersLink().pressLinkCreateUser()
+                .fillInCreateUserForm().pressCreateUserButton().isNewTableRowWithNewUserDisplays();
 
-        new ManageJenkinsPage().openThisPage().pressManageUsersLink().pressLinkCreateUser().fillInCreateUserForm();
+        assertTrue(actualResult, "[New table row with new user is not displayed]");
     }
 
-    @Test(testName = "checkIfTextAppearsOnDeleteUsersPage")
+    @Test(testName = "checkIfTextAppearsOnDeleteUsersPage", dependsOnMethods = "FourthTest")
     public void FifthTest() {
         boolean actualResult = entryPage.openThisPage().pressManageJenkinsLink().pressManageUsersLink()
                 .pressLinkDeleteUser().isTextAboutDeletingUserAppears();
         assertTrue(actualResult, "[Text 'Are you sure about deleting the user from Jenkins?' is not displayed on DeleteUserPage]");
     }
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    @Test(testName = "checkIfNewTableRowRemovesAfterDeletingNewUser")
-    public void SixthTest() {
-        boolean actualResult = new ManageUsersPage().openThisPage().pressLinkDeleteUser().isTextAboutDeletingUserAppears();
-        assertTrue(actualResult, "[Table row has not been removed after deleting user]");
+//    @Test(testName = "checkIfAllInformationAboutNewUserDisappearsAfterUserRemoval")
+//    public void SixthTest() {
+//        boolean actualResult = entryPage.pressManageJenkinsLink().pressManageUsersLink()
+//                .pressLinkDeleteUser().pressButtonYesToDeleteUser() //проверить, что ячейка таблицы отсутствует на странице
+//        assertTrue(actualResult, "[Table row has not been removed after deleting user]");
+//    }
+//
+//    @Test(testName = "checkIfAllInformationAboutNewUserDisappearsAfterUserRemoval")
+//    public void SixthTest2() {
+//        boolean actualResult = entryPage.pressManageJenkinsLink().pressManageUsersLink()
+//                .pressLinkDeleteUser().pressButtonYesToDeleteUser() //проверить, что ссылка на юзера отсутствует на странице
+//        assertTrue(actualResult, "[Table row has not been removed after deleting user]");
+//    }
+
+    @Test(testName = "checkThatThereIsNoLinkToDeleteAdminAccount")
+    public void SeventhTest() {
+        boolean actualResult = entryPage.pressManageJenkinsLink().pressManageUsersLink().pressLinkCreateUser()
+                .fillInCreateUserForm().pressCreateUserButton().pressLinkDeleteUser()
+                .pressButtonYesToDeleteUser().isLinkDeleteAdminExists();
+        assertFalse(actualResult, "[link to delete admin account exists on 'Manage Users' page]");
     }
 
     @AfterSuite

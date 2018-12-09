@@ -102,7 +102,6 @@ public class CreateUserPage extends AbstractPage {
         return this;
     }
 
-
 //    Нажатие на кнопку 'Create user'
     public ManageUsersPage pressCreateUserButton(){
         buttonCreateUser.click();

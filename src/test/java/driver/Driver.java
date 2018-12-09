@@ -9,13 +9,11 @@ public class Driver {
 
     //Синглтон. Создастся один объект драйвера при первой инициализации, а дальше между тестами будем его передавать.
     private static WebDriver driver;
-//
-////    private Driver(){}
-//
+
     private static final int IMPLICIT_WAIT_TIMEOUT = 30;
     private static final int PAGE_LOAD_TIMEOUT = 10;
 
-    public static WebDriver getWebDriverInstance()  {
+    public static WebDriver getWebDriverInstance() {
         if (driver == null){
             System.setProperty("webdriver.chrome.driver", "D:/ChromeDriver/chromedriver.exe");
             driver = new ChromeDriver();
