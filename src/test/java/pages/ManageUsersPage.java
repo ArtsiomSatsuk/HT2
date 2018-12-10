@@ -1,28 +1,28 @@
 package pages;
 
-import driver.Driver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.Collection;
 
+import static driver.Driver.getDriver;
 import static pages.CreateUserPage.NEW_USER_NAME;
-import static pages.EntryPage.USER_NAME;
+import static pages.EntryPage.ADMIN_NAME;
 
 public class ManageUsersPage extends AbstractPage{
 
     private static final String MANAGE_USERS_URL = "http://localhost:8080/securityRealm/";
 
-    private String newUserDeleteLinkLocator = "a[href=\"user/"+NEW_USER_NAME.toLowerCase()+"/delete\"]";
-    private String linkDeleteAdminLocator = "a[href=\"user/"+USER_NAME.toLowerCase()+"/delete\"]";
+    //Использую StringBuilder, чтобы не создавать несколько лишних объектов строк, а сразу создать одну строку
+    private String newUserDeleteLinkLocator = new StringBuilder("a[href=\"user/"+NEW_USER_NAME.toLowerCase()+"/delete\"]").toString();
+    private String linkDeleteAdminLocator = new StringBuilder("a[href=\"user/"+ ADMIN_NAME.toLowerCase()+"/delete\"]").toString();
 
-    @FindBy(xpath = "//a[text()=\"Create User\"]")
+    @FindBy(xpath = "//a[text()='Create User']")
     private WebElement linkCreateUser;
 
-    @FindBy(xpath = "a[href*=delete]")
-    private WebElement deleteUserLinks;
+//    @FindBy(xpath = "a[href*=delete]")
+//    private WebElement deleteUserLinks;
 
     ////////////////////////////////////////////////////////////
 //    @FindBy(xpath = "//tr/td//a[text()]")   //элемент tr в которой есть ячейка td с текстом
@@ -34,20 +34,11 @@ public class ManageUsersPage extends AbstractPage{
 
     private By newUserDeleteLink = By.cssSelector(newUserDeleteLinkLocator);
 
-    private Collection<WebElement> allRowsWithText = getDriver().findElements(allRowsInUsersTableWithTextLocator);
+    private Collection<WebElement> allRowsInUsersTableWithText = getDriver().findElements(allRowsInUsersTableWithTextLocator);
 
-    public boolean isNewTableRowWithNewUserDisplays() {
-        return allRowsWithText.stream().anyMatch(webElement -> webElement.getText().equals(NEW_USER_NAME));
-    }
-
-    public ManageUsersPage() {
-        super();
-    }
-
-    @Override
-    public ManageUsersPage openThisPage() {
-        getDriver().get(MANAGE_USERS_URL);
-        return this;
+    //проверяет, есть ли хотя бы одна строка в таблице пользователей с новым, только что добавленным пользователем
+    public boolean checkIfNewTableRowWithNewUserDisplays() {
+        return allRowsInUsersTableWithText.stream().anyMatch(webElement -> webElement.getText().equals(NEW_USER_NAME));
     }
 
     //Нажатие на ссылку 'Create User' и переход на страницу 'Create User'
@@ -62,19 +53,23 @@ public class ManageUsersPage extends AbstractPage{
         return new DeleteUserPage();
     }
 
-    public boolean isLinkDeleteAdminExists(){
-        try{
-            Driver.getWebDriverInstance().findElement(By.cssSelector(linkDeleteAdminLocator));
-            return true;
-        } catch (NoSuchElementException e){
-            return false;
-        }
+    //существует ли ссылка на удаление пользователя 'Admin'
+    public boolean checkIfLinkDeleteAdminExists() {
+        return getDriver().findElements(By.cssSelector(linkDeleteAdminLocator)).size() != 0;
     }
 
-    /////////////////////////////////////////////////////
+    //существует ли ссылка на удаление пользователя, которого только что удалили
+    public boolean checkIfLinkToDeleteUserExistsAfterDeletingUser() {
+        return getDriver().findElements(By.cssSelector(newUserDeleteLinkLocator)).size()!=0;
+    }
+
+    //существует ли строка в таблице, про юзера, которого только что удалили
+    public boolean checkIfTableRowExistsAfterDeletingUser(){
+        return allRowsInUsersTableWithText.stream().anyMatch(webElement -> webElement.getText().equals(NEW_USER_NAME));
+    }
+
     //Проверка, доступна ли ссылка 'Create User'
-    public boolean isLinkCreateUserAvailable() {
+    public boolean checkIfLinkCreateUserAvailable() {
         return linkCreateUser.isEnabled();
     }
-    /////////////////////////////////////////////////////
 }

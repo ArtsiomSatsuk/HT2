@@ -3,10 +3,12 @@ package pages;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class EntryPage extends AbstractPage{
+import static driver.Driver.getDriver;
 
-    public static final String USER_NAME = "Artiom";
-    public static final String USER_PASSWORD = "2887638";
+public class EntryPage extends AbstractPage {
+
+    public static final String ADMIN_NAME = "Artiom";
+    public static final String ADMIN_PASSWORD = "2887638";
 
     static final String BASE_URL = "http://localhost:8080/";
 
@@ -23,11 +25,9 @@ public class EntryPage extends AbstractPage{
     @FindBy(xpath = "//a[@href=\"/manage\"][@class=\"task-link\"]")
     private WebElement linkManageJenkins;
 
-    public EntryPage() {
-        super();
-    }
+    @FindBy(css = "a[href*='refresh']")
+    private WebElement autoRefreshLink;
 
-    @Override
     public EntryPage openThisPage() {
         getDriver().get(BASE_URL);
         return this;
@@ -57,4 +57,32 @@ public class EntryPage extends AbstractPage{
         linkManageJenkins.click();
         return new ManageJenkinsPage();
     }
+
+    //нажать на ссылку 'auto refresh'
+    public EntryPage pressAutoRefreshLink() {
+        autoRefreshLink.click();
+        return this;
+    }
+
+    private boolean checkIfDisableReplacesEnableLink() {
+        autoRefreshLink.click();
+        return autoRefreshLink.getText().equals("DISABLE AUTO REFRESH");
+    }
+
+    private boolean checkIfEnableReplacesDisableLink() {
+        autoRefreshLink.click();
+        System.out.println("First was DISABLE");
+        return autoRefreshLink.getText().equals("ENABLE AUTO REFRESH");
+    }
+
+    //Проверить меняют ли 'auto refresh' ссылки друг друга
+    public boolean checkIfAutoRefreshLinksReplaceEachOther() {
+        if (autoRefreshLink.getText().equals("ENABLE AUTO REFRESH")) {
+            System.out.println("first was ENABLE");
+            return checkIfDisableReplacesEnableLink();
+        }
+        return checkIfEnableReplacesDisableLink();
+    }
+
+
 }

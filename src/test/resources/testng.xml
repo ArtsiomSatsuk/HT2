@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Suite1" verbose="2">
-    <test name="FirstTest">
+    <test name="JenkinsTests">
         <classes>
-            <class name="tests.FirstTest"/>
+            <class name="tests.JenkinsTests"/>
         </classes>
     </test>
 </suite>
