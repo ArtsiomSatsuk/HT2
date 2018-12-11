@@ -2,17 +2,17 @@ package pages;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.testng.Assert;
 
+import static constants.InputParameters.ADMIN_NAME;
+import static constants.InputParameters.ADMIN_PASSWORD;
 import static driver.Driver.getDriver;
+import static org.testng.Assert.fail;
 
 public class EntryPage extends AbstractPage {
 
-    public static final String ADMIN_NAME = "Artiom";
-    public static final String ADMIN_PASSWORD = "2887638";
+    private static final String BASE_URL = "http://localhost:8080/";
 
-    static final String BASE_URL = "http://localhost:8080/";
-
-    // Подготовка элементов страницы.
     @FindBy(css = "input[id*=username]")
     private WebElement usernameInput;
 
@@ -22,7 +22,7 @@ public class EntryPage extends AbstractPage {
     @FindBy(name = "Submit")
     private WebElement signInButton;
 
-    @FindBy(xpath = "//a[@href=\"/manage\"][@class=\"task-link\"]")
+    @FindBy(xpath = "//a[@href='/manage'][@class='task-link']")
     private WebElement linkManageJenkins;
 
     @FindBy(css = "a[href*='refresh']")
@@ -33,35 +33,45 @@ public class EntryPage extends AbstractPage {
         return this;
     }
 
-    // Заполнение имени.
-    public EntryPage setUserName(String value) {
+    public EntryPage setAdminName() {
         usernameInput.clear();
-        usernameInput.sendKeys(value);
+        usernameInput.sendKeys(ADMIN_NAME);
         return this;
     }
 
-    // Заполнение пароля.
-    public EntryPage setUserPassword(String value) {
+    public EntryPage setAdminPassword() {
         passwordInput.clear();
-        passwordInput.sendKeys(value);
+        passwordInput.sendKeys(ADMIN_PASSWORD);
         return this;
     }
 
-    //Отправка логина и пароля
     public void submitLoginAndPassword() {
         signInButton.click();
     }
 
-    //Переход на страницу 'Manage Jenkins'
-    public ManageJenkinsPage pressManageJenkinsLink() {
+    public ManageJenkinsPage clickManageJenkinsLink() {
         linkManageJenkins.click();
         return new ManageJenkinsPage();
     }
 
-    //нажать на ссылку 'auto refresh'
-    public EntryPage pressAutoRefreshLink() {
-        autoRefreshLink.click();
+    //Verification if 'auto refresh' links replace each other
+    public EntryPage clickAndCheckAutoRefreshLink() {
+        checkAutoRefreshLink();
         return this;
+    }
+
+    private void checkAutoRefreshLink() {
+        switch (autoRefreshLink.getText()) {
+            case "ENABLE AUTO REFRESH":
+                Assert.assertTrue(checkIfDisableReplacesEnableLink(), "[Disable link didn't replace Enable link]");
+                break;
+            case "DISABLE AUTO REFRESH":
+                Assert.assertTrue(checkIfEnableReplacesDisableLink(), "[Enable link didn't replace Disable link");
+                break;
+            default:
+                fail("[Incorrect text in Auto Refresh link]");
+                break;
+        }
     }
 
     private boolean checkIfDisableReplacesEnableLink() {
@@ -71,18 +81,6 @@ public class EntryPage extends AbstractPage {
 
     private boolean checkIfEnableReplacesDisableLink() {
         autoRefreshLink.click();
-        System.out.println("First was DISABLE");
         return autoRefreshLink.getText().equals("ENABLE AUTO REFRESH");
     }
-
-    //Проверить меняют ли 'auto refresh' ссылки друг друга
-    public boolean checkIfAutoRefreshLinksReplaceEachOther() {
-        if (autoRefreshLink.getText().equals("ENABLE AUTO REFRESH")) {
-            System.out.println("first was ENABLE");
-            return checkIfDisableReplacesEnableLink();
-        }
-        return checkIfEnableReplacesDisableLink();
-    }
-
-
 }

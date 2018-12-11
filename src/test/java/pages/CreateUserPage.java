@@ -3,122 +3,109 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.testng.asserts.SoftAssert;
 
 import java.util.Collection;
 
+import static constants.InputParameters.*;
 import static driver.Driver.getDriver;
 
 public class CreateUserPage extends AbstractPage {
 
-    public static final String CREATE_USER_URL = "http://localhost:8080/securityRealm/addUser";
+    private By inputFieldsWithTextTypeLocator = By.xpath("//input[@type='text']");
 
-    public static String NEW_USER_NAME = "NewUserName"; //подумать, может сделать генератор имени
+    private By inputFieldsWithPasswordTypeLocator = By.xpath("//input[@type='password']");
 
-    //Все поля в форме 'CreateUser' с типом текст 'text'
-    private By inputFieldsWithTextTypeLocator = By.xpath("//input[@type=\"text\"]");
-
-    //Все поля в форме 'CreateUser' с типом текст 'password'
-    private By inputFieldsWithPasswordTypeLocator = By.xpath("//input[@type=\"password\"]");
-
-//    //Весь текст на странице 'Create user'
-//    private By allTextOnCreateUserPage = By.xpath("//text()");
-
-
-    @FindBy(xpath = "//*[@id=\"main-panel\"]/form") //++++
+    @FindBy(xpath = "//*[@id='main-panel']/form")
     private WebElement formCreateUser;
 
-    @FindBy(css = "#yui-gen1-button") //++++
+    @FindBy(css = "#yui-gen1-button")
     private WebElement buttonCreateUser;
 
-    @FindBy(id = "username") //++++
+    @FindBy(id = "username")
     private WebElement inputUsernameField;
 
-    @FindBy(name = "password1") //++++
+    @FindBy(name = "password1")
     private WebElement inputPasswordField;
 
-    @FindBy(name = "password2") //++++
+    @FindBy(name = "password2")
     private WebElement inputFieldToConfirmPassword;
 
-    @FindBy(xpath = "//input[@name=\"fullname\"]") //++++
+    @FindBy(xpath = "//input[@name='fullname']")
     private WebElement inputFullnameField;
 
-    @FindBy(xpath = "//input[@name=\"email\"]") //++++
+    @FindBy(xpath = "//input[@name='email']")
     private WebElement inputEmailField;
-
-
 
     private Collection<WebElement> textTypeFieldsInForm = getDriver().findElements(inputFieldsWithTextTypeLocator);
     private Collection<WebElement> passwordTypeFieldsInForm = getDriver().findElements(inputFieldsWithPasswordTypeLocator);
 
-    //Появиляется ли форма на странице 'Create User' c тремя полями типа 'text' и двумя полями типа 'password' и все поля пустые
-    public boolean checkIfCreateUserFormDisplayedProperly() {
-        if ((formCreateUser.isDisplayed()) && (textTypeFieldsInForm.size() == 3) && (passwordTypeFieldsInForm.size() == 2) &&
-                (textTypeFieldsInForm.stream().filter(webElement -> webElement.getAttribute("value").equals("")).count() == 3) &&
-                (passwordTypeFieldsInForm.stream().filter(webElement -> webElement.getAttribute("value").equals("")).count() == 2)) {
-            return true;
-        }
-        return false;
+    private SoftAssert softAssert = new SoftAssert();
+
+    /*
+    Verification if 'Create User' form has three fields with 'text' type, two fields with 'password type'
+    and all input fields are empty
+    */
+
+    public void isCreateUserFormDisplayedProperly() {
+        softAssert.assertTrue(formCreateUser.isDisplayed(), "[Form 'Create User' is not displayed on 'Create User' page]");
+        softAssert.assertTrue(textTypeFieldsInForm.size() == 3, "[There aren't three input fields with 'text' type in 'Create User' form]");
+        softAssert.assertTrue(passwordTypeFieldsInForm.size() == 2, "[There aren't two input fields with 'text' type in 'Create User' form]");
+        softAssert.assertTrue(textTypeFieldsInForm.stream().filter(inputField -> inputField.getText().equals("")).count() == 3,
+                "[At least one of input fields with 'text' type is not empty in 'Create User' form]");
+        softAssert.assertTrue(passwordTypeFieldsInForm.stream().filter(inputField -> inputField.getText().equals("")).count() == 2,
+                "[At least one of input fields with 'password' type is not empty in 'Create User' form]");
+        softAssert.assertAll();
     }
 
-    // Заполнение поля 'Username'.
     private CreateUserPage inputUsername(String value) {
         inputUsernameField.sendKeys(value);
         return this;
     }
 
-    // Заполнение поля 'Password'.
     private CreateUserPage inputPassword(String value) {
         inputPasswordField.sendKeys(value);
         return this;
     }
 
-    // Заполнение поля 'Confirm password'.
     private CreateUserPage inputPasswordToConfirm(String value) {
         inputFieldToConfirmPassword.sendKeys(value);
         return this;
     }
 
-    // Заполнение поля 'Full name'.
     private CreateUserPage inputFullName(String value) {
         inputFullnameField.sendKeys(value);
         return this;
     }
 
-    // Заполнение поля 'E-mail address'.
     private CreateUserPage inputEmail(String value) {
         inputEmailField.sendKeys(value);
         return this;
     }
 
-//    public CreateUserPage deleteIfSuchUserAlreadyExists(){
-//
-//        return this;
-//    }
-
-    public CreateUserPage fillInCreateUserForm(){
+    public CreateUserPage fillInCreateUserForm() {
         inputUsername(NEW_USER_NAME);
-        inputPassword("12345");
-        inputPasswordToConfirm("12345");
-        inputFullName(NEW_USER_NAME + " "+NEW_USER_NAME);
-        inputEmail(NEW_USER_NAME+"@qqq.by");
+        inputPassword(NEW_USER_PASSWORD);
+        inputPasswordToConfirm(NEW_USER_PASSWORD);
+        inputFullName(NEW_USER_FULL_NAME);
+        inputEmail(NEW_USER_EMAIL);
         return this;
     }
 
-    public CreateUserPage fillInCreateUserFormWithoutName(){
-        inputPassword("12345");
-        inputPasswordToConfirm("12345");
-        inputFullName(NEW_USER_NAME + " "+NEW_USER_NAME);
-        inputEmail(NEW_USER_NAME+"@qqq.by");
+    public CreateUserPage fillInCreateUserFormWithoutName() {
+        inputPassword(NEW_USER_PASSWORD);
+        inputPasswordToConfirm(NEW_USER_PASSWORD);
+        inputFullName(NEW_USER_FULL_NAME);
+        inputEmail(NEW_USER_EMAIL);
         return this;
     }
 
-    public boolean pressCreateUserButtonAndCheckWarningMessage() {
+    public boolean clickCreateUserButtonAndCheckWarningMessage() {
         buttonCreateUser.click();
         return getDriver().getPageSource().contains("\"\" is prohibited as a full name for security reasons.");
     }
 
-    //Нажатие на кнопку 'Create user'
-    public ManageUsersPage pressCreateUserButton(){
+    public ManageUsersPage clickCreateUserButton() {
         buttonCreateUser.click();
         return new ManageUsersPage();
     }

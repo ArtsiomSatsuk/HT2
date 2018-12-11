@@ -8,6 +8,6 @@ public abstract class AbstractPage {
 
     protected AbstractPage() {
         WebDriver driver = Driver.getDriver();
-        PageFactory.initElements(driver,this);
+        PageFactory.initElements(driver, this);
     }
 }
