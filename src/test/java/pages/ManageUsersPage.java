@@ -7,8 +7,8 @@ import org.testng.asserts.SoftAssert;
 
 import java.util.Collection;
 
-import static constants.InputParameters.ADMIN_NAME;
-import static constants.InputParameters.NEW_USER_NAME;
+import static constants.InputData.ADMIN_NAME;
+import static constants.InputData.NEW_USER_NAME;
 import static driver.Driver.getDriver;
 
 public class ManageUsersPage extends AbstractPage {
@@ -16,12 +16,12 @@ public class ManageUsersPage extends AbstractPage {
     private String newUserDeleteLinkLocator = "a[href='user/" + NEW_USER_NAME.toLowerCase() + "/delete']";
     private String linkDeleteAdminLocator = "a[href='user/" + ADMIN_NAME.toLowerCase() + "/delete']";
 
-    @FindBy(xpath = "//a[text()='Create User']")
+    @FindBy(xpath = "//div[@id='side-panel']//a[text()='Create User']")
     private WebElement linkCreateUser;
 
     private By newUserDeleteLink = By.cssSelector(newUserDeleteLinkLocator);
 
-    private Collection<WebElement> allRowsInUsersTable = getDriver().findElements(By.xpath("/tr/td"));
+    private Collection<WebElement> allRowsInUsersTable = getDriver().findElements(By.xpath("//tr/td"));
 
     public boolean isNewTableRowWithNewUserDisplayed() {
         return allRowsInUsersTable.stream().anyMatch(tableRow -> tableRow.getText().equals(NEW_USER_NAME));

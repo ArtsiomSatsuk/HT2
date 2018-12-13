@@ -4,8 +4,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
-import static constants.InputParameters.ADMIN_NAME;
-import static constants.InputParameters.ADMIN_PASSWORD;
+import static constants.InputData.ADMIN_NAME;
+import static constants.InputData.ADMIN_PASSWORD;
 import static driver.Driver.getDriver;
 import static org.testng.Assert.fail;
 

@@ -7,7 +7,7 @@ import org.testng.asserts.SoftAssert;
 
 import java.util.Collection;
 
-import static constants.InputParameters.*;
+import static constants.InputData.*;
 import static driver.Driver.getDriver;
 
 public class CreateUserPage extends AbstractPage {
@@ -19,7 +19,7 @@ public class CreateUserPage extends AbstractPage {
     @FindBy(xpath = "//*[@id='main-panel']/form")
     private WebElement formCreateUser;
 
-    @FindBy(css = "#yui-gen1-button")
+    @FindBy(xpath = "//div[@id='main-panel']//button[text()='Create User']")
     private WebElement buttonCreateUser;
 
     @FindBy(id = "username")
