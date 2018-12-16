@@ -3,6 +3,8 @@ package pages;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import static constants.Constants.DELETE_USER_PAGE_URL;
+import static driver.Driver.getDriver;
 
 public class DeleteUserPage extends AbstractPage {
 
@@ -19,5 +21,11 @@ public class DeleteUserPage extends AbstractPage {
     public ManageUsersPage clickButtonYesToDeleteUser() {
         buttonYesToDeleteUser.click();
         return new ManageUsersPage();
+    }
+
+    @Override
+    public DeleteUserPage openThisPage() {
+        getDriver().navigate().to(DELETE_USER_PAGE_URL);
+        return this;
     }
 }

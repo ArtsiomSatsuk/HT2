@@ -3,7 +3,7 @@
 <suite name="JenkinsTests" verbose="2">
     <test name="JenkinsTests">
         <classes>
-            <class name="tests.FourthAndFifthTests"/>
+            <class name="tests.CreateDeleteUserTests"/>
             <class name="tests.JenkinsTests"/>
         </classes>
     </test>

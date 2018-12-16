@@ -7,7 +7,7 @@ import org.testng.asserts.SoftAssert;
 
 import java.util.Collection;
 
-import static constants.InputData.*;
+import static constants.Constants.*;
 import static driver.Driver.getDriver;
 
 public class CreateUserPage extends AbstractPage {
@@ -58,45 +58,40 @@ public class CreateUserPage extends AbstractPage {
         softAssert.assertAll();
     }
 
-    private CreateUserPage inputUsername(String value) {
-        inputUsernameField.sendKeys(value);
-        return this;
+    private void inputUsername() {
+        inputUsernameField.sendKeys(NEW_USER_NAME);
     }
 
-    private CreateUserPage inputPassword(String value) {
-        inputPasswordField.sendKeys(value);
-        return this;
+    private void inputPassword() {
+        inputPasswordField.sendKeys(NEW_USER_PASSWORD);
     }
 
-    private CreateUserPage inputPasswordToConfirm(String value) {
-        inputFieldToConfirmPassword.sendKeys(value);
-        return this;
+    private void inputPasswordToConfirm() {
+        inputFieldToConfirmPassword.sendKeys(NEW_USER_PASSWORD);
     }
 
-    private CreateUserPage inputFullName(String value) {
-        inputFullnameField.sendKeys(value);
-        return this;
+    private void inputFullName() {
+        inputFullnameField.sendKeys(NEW_USER_FULL_NAME);
     }
 
-    private CreateUserPage inputEmail(String value) {
-        inputEmailField.sendKeys(value);
-        return this;
+    private void inputEmail() {
+        inputEmailField.sendKeys(NEW_USER_EMAIL);
     }
 
     public CreateUserPage fillInCreateUserForm() {
-        inputUsername(NEW_USER_NAME);
-        inputPassword(NEW_USER_PASSWORD);
-        inputPasswordToConfirm(NEW_USER_PASSWORD);
-        inputFullName(NEW_USER_FULL_NAME);
-        inputEmail(NEW_USER_EMAIL);
+        inputUsername();
+        inputPassword();
+        inputPasswordToConfirm();
+        inputFullName();
+        inputEmail();
         return this;
     }
 
     public CreateUserPage fillInCreateUserFormWithoutName() {
-        inputPassword(NEW_USER_PASSWORD);
-        inputPasswordToConfirm(NEW_USER_PASSWORD);
-        inputFullName(NEW_USER_FULL_NAME);
-        inputEmail(NEW_USER_EMAIL);
+        inputPassword();
+        inputPasswordToConfirm();
+        inputFullName();
+        inputEmail();
         return this;
     }
 
@@ -108,5 +103,11 @@ public class CreateUserPage extends AbstractPage {
     public ManageUsersPage clickCreateUserButton() {
         buttonCreateUser.click();
         return new ManageUsersPage();
+    }
+
+    @Override
+    public CreateUserPage openThisPage() {
+        getDriver().navigate().to(CREATE_USER_PAGE_URL);
+        return this;
     }
 }

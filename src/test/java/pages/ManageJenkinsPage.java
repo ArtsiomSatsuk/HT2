@@ -4,6 +4,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.asserts.SoftAssert;
 
+import static constants.Constants.MANAGE_JENKINS_PAGE_URL;
+import static driver.Driver.getDriver;
+
 public class ManageJenkinsPage extends AbstractPage {
 
     @FindBy(xpath = "//*[@id='main-panel']//dt[text()='Manage Users']")
@@ -24,8 +27,8 @@ public class ManageJenkinsPage extends AbstractPage {
 
     //Verification if elements 'dt' and 'dd' on 'Manage Jenkins' page are displayed properly
     public void isManageUsersElementsDisplayed() {
-        softAssert.assertTrue(ddElementCreateDeleteModify.isDisplayed(),
-                "[Element 'dd' with 'Create/delete/modify users that can log in to this Jenkins' text isn't displayed]");
+        softAssert.assertTrue(ddElementCreateDeleteModify.isDisplayed(), "[Element 'dd' with 'Create/delete/modify users" +
+                " that can log in to this Jenkins' text isn't displayed]");
         softAssert.assertTrue(ddElementCreateDeleteModify.getText().equals("Create/delete/modify users that can log in to this Jenkins"),
                 "[Text in 'dd' element on 'Manage Jenkins' page is not correct]");
         softAssert.assertTrue(dtElementManageUsers.isDisplayed(),
@@ -33,5 +36,11 @@ public class ManageJenkinsPage extends AbstractPage {
         softAssert.assertTrue(dtElementManageUsers.getText().equals("Manage Users"),
                 "[Text in 'dt' element on 'Manage Jenkins' page is not correct]");
         softAssert.assertAll();
+    }
+
+    @Override
+    public ManageJenkinsPage openThisPage() {
+        getDriver().navigate().to(MANAGE_JENKINS_PAGE_URL);
+        return this;
     }
 }

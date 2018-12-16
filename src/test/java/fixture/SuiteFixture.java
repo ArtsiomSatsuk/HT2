@@ -1,6 +1,6 @@
 package fixture;
 
-import constants.InputData;
+import credentials.InputData;
 import driver.Driver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;

@@ -1,4 +1,4 @@
-package constants;
+package credentials;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,10 +16,4 @@ public class InputData {
         ADMIN_NAME = p.getProperty("AdminName");
         ADMIN_PASSWORD = p.getProperty("AdminPassword");
     }
-
-    public static final String NEW_USER_NAME = "someuser";
-    public static final String NEW_USER_PASSWORD = "somepassword";
-    public static final String NEW_USER_FULL_NAME = "Some Full Name";
-    public static final String NEW_USER_EMAIL = "some@addr.dom";
-
 }
